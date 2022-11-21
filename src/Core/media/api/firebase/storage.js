@@ -87,4 +87,4 @@ const firebaseStorage = {
   processAndUploadMediaFileWithProgressTracking,
 }
 
-export default firebaseStorage
+export default {firebaseStorage}

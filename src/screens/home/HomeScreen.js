@@ -7,6 +7,12 @@ import { TNTouchableIcon } from '../../Core/truly-native'
 import { useCurrentUser } from '../../Core/onboarding'
 import { useAuth } from '../../Core/onboarding/hooks/useAuth'
 
+
+import { useState } from 'react'
+import { FlatList } from 'react-native-gesture-handler'
+
+
+
 export const HomeScreen = memo(props => {
   const { navigation } = props
   const currentUser = useCurrentUser()
@@ -15,6 +21,7 @@ export const HomeScreen = memo(props => {
   const { localized } = useTranslations()
   const { theme, appearance } = useTheme()
   const styles = dynamicStyles(theme, appearance)
+
 
   useLayoutEffect(() => {
     const colorSet = theme.colors[appearance]
@@ -56,6 +63,7 @@ export const HomeScreen = memo(props => {
     })
   }, [currentUser])
 
+
   return (
     <View style={styles.container}>
       <FastImage
@@ -66,10 +74,11 @@ export const HomeScreen = memo(props => {
         {localized('Logged in as')} {currentUser?.email}
       </Text>
       <Text>{currentUser.id}</Text>
-      <Button title="show all ads"></Button>
-      <Button title="Show my ads"></Button>
-      <Button title="add new ad"></Button>
-      
+      <Button title="show all ads" onPress={() => navigation.navigate('ShowAllAds')}/>
+      <Button title="Show my ads" onPress={() => navigation.navigate('ShowMyAds')}/>
+      <Button title="add new ad" onPress={() => navigation.navigate('AddNewAd')}/>
     </View>
   )
 })
+
+

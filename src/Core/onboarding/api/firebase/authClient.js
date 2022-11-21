@@ -4,6 +4,8 @@ import firestore from '@react-native-firebase/firestore'
 import { updateUser } from '../../../users'
 import { ErrorCode } from '../ErrorCode'
 import { getUnixTimeStamp } from '../../../helpers/timeFormat'
+import {getFirestore} from '@react-native-firebase/firestore'
+import { currentUser } from '../../../onboarding/hooks/useCurrentUser'
 
 const usersRef = firestore().collection('users')
 
@@ -471,3 +473,5 @@ export const removeUser = userID => {
 export const logout = () => {
   auth().signOut()
 }
+
+
