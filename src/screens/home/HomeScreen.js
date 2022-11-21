@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useLayoutEffect, useCallback } from 'react'
-import { Text, View } from 'react-native'
+import { Button, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { useTheme, useTranslations } from 'dopenative'
 import dynamicStyles from './styles'
@@ -65,6 +65,11 @@ export const HomeScreen = memo(props => {
       <Text style={styles.text}>
         {localized('Logged in as')} {currentUser?.email}
       </Text>
+      <Text>{currentUser.id}</Text>
+      <Button title="show all ads"></Button>
+      <Button title="Show my ads"></Button>
+      <Button title="add new ad"></Button>
+      
     </View>
   )
 })
