@@ -1,13 +1,100 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, } from 'react-native'
+import React, { useEffect, useState } from 'react'
+
+import {firebase, database} from '@react-native-firebase/database';
+import { useCurrentUser } from '../../Core/onboarding'
+
+import { FlatList } from 'react-native-gesture-handler';
+
 
 function ShowMyAds() {
-  return (
-    <View>
-      <Text>Show My Ads</Text>
-    </View>
-  )
-}
+    const [posts, setPosts] = useState([]);
+
+    const currentUser = useCurrentUser()
+
+    const reference = firebase
+    .app()
+    .database('https://fir-addtest-e6b1c-default-rtdb.firebaseio.com/')
+
+    useEffect(() => {
+        reference.ref('posts')
+        .on('value', (snapshot) => {
+          setPosts([]);
+          snapshot.forEach((child) => {
+            const newObj = {
+              id: child.val().id,
+              name: child.val().name,
+              price: child.val().price,
+              description: child.val().description,
+              userPosted: child.val().userPosted
+            };
+
+              setPosts(emptyArray => [...emptyArray, newObj]);
+
+          })
+        }) 
+      }, [])
+
+    return (
+        <View style={styles.container}>
+          <Text style={styles.title}>Posts</Text>
+            <FlatList 
+              data={posts.filter(posts => posts.userPosted === currentUser?.id)}
+              renderItem={(item) => {
+                return (
+                  <View style={styles.posts}>
+                  <Text style={styles.name}>
+                    {item.item.name} {item.item.price} {item.item.description}
+                  </Text>
+                </View>
+              )
+              }
+              }            
+              keyExtractor={item => item.id}
+              scrollEnabled={true}
+            />
+        </View>
+      );
+    }
 
 
 export default ShowMyAds
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  postsContainer: {
+    borderTopWidth: 3,
+    borderTopColor: '#ddd',
+    flex: 1,
+  },
+  posts: {
+    padding: 20,
+    backgroundColor: '#ededed',
+    borderColor: '#ddd',
+    borderWidth: 1,
+    borderRadius: 10,
+    marginBottom: 5,
+  },
+  name: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  price: {
+    fontSize: 14,
+    color: '#999',
+  },
+  description: {
+    fontSize: 14,
+    color: '#999',
+  },
+  title: {
+    paddingTop: 30,
+    paddingBottom: 20,
+    fontSize: 20,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+});

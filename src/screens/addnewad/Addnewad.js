@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { firebase } from '@react-native-firebase/database';
+import {useCurrentUser} from '../../Core/onboarding'
 
 
 
@@ -9,6 +10,10 @@ function Addnewad() {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
+    const [userID, setuserID] = useState('')
+
+
+    const currentUser = useCurrentUser()
 
     const reference = firebase
         .app()
@@ -21,12 +26,14 @@ function Addnewad() {
             id: newRef.key,
             name: name,
             description: description,
-            price: price
+            price: price,
+            userPosted: currentUser?.id
         })
         .then(() => console.log('Data inserted'));
         setName('')
         setDescription('')
         setPrice('')
+        setuserID('')
     }
 
     
