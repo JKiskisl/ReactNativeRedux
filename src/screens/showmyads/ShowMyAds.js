@@ -1,65 +1,64 @@
-import { StyleSheet, Text, View, } from 'react-native'
+import { StyleSheet, Text, View, Button } from 'react-native'
 import React, { useEffect, useState } from 'react'
 
-import {firebase, database} from '@react-native-firebase/database';
+import { firebase, database } from '@react-native-firebase/database'
 import { useCurrentUser } from '../../Core/onboarding'
+import DeleteorUpdate from '../deleteorupdate/DeleteorUpdate'
+import { useRoute } from '@react-navigation/native'
 
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler'
 
+function ShowMyAds(props) {
+  const [posts, setPosts] = useState([])
 
-function ShowMyAds() {
-    const [posts, setPosts] = useState([]);
+  const {navigation} = props
+  const currentUser = useCurrentUser()
 
-    const currentUser = useCurrentUser()
-
-    const reference = firebase
+  const reference = firebase
     .app()
     .database('https://fir-addtest-e6b1c-default-rtdb.firebaseio.com/')
 
-    useEffect(() => {
-        reference.ref('posts')
-        .on('value', (snapshot) => {
-          setPosts([]);
-          snapshot.forEach((child) => {
-            const newObj = {
-              id: child.val().id,
-              name: child.val().name,
-              price: child.val().price,
-              description: child.val().description,
-              userPosted: child.val().userPosted
-            };
+  useEffect(() => {
+    reference.ref('posts').on('value', snapshot => {
+      setPosts([])
+      snapshot.forEach(child => {
+        const newObj = {
+          id: child.val().id,
+          name: child.val().name,
+          price: child.val().price,
+          description: child.val().description,
+          userPosted: child.val().userPosted,
+        }
 
-              setPosts(emptyArray => [...emptyArray, newObj]);
+        setPosts(emptyArray => [...emptyArray, newObj])
+      })
+    })
+  }, [])
 
-          })
-        }) 
-      }, [])
-
-    return (
-        <View style={styles.container}>
-          <Text style={styles.title}>Posts</Text>
-            <FlatList 
-              data={posts.filter(posts => posts.userPosted === currentUser?.id)}
-              renderItem={(item) => {
-                return (
-                  <View style={styles.posts}>
-                  <Text style={styles.name}>
-                    {item.item.name} {item.item.price} {item.item.description}
-                  </Text>
-                </View>
-              )
-              }
-              }            
-              keyExtractor={item => item.id}
-              scrollEnabled={true}
-            />
-        </View>
-      );
-    }
-
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Posts</Text>
+      <FlatList
+        data={posts.filter(posts => posts.userPosted === currentUser?.id)}
+        renderItem={item => {
+          return (
+            <View style={styles.posts}>
+              <Button title={item.item.name}
+              style={styles.name} 
+              onPress={()=> navigation.navigate('DeleteorUpdate', 
+                {postpass: item.item})}>
+              </Button>
+            </View>
+          )
+        }}
+        keyExtractor={item => item.id}
+        scrollEnabled={true}
+      />
+    </View>
+  )
+}
 
 export default ShowMyAds
-
 
 const styles = StyleSheet.create({
   container: {
@@ -97,4 +96,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
   },
-});
+})

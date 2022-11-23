@@ -1,60 +1,55 @@
-import { StyleSheet, Text, View, } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 
-import {firebase, database} from '@react-native-firebase/database';
+import { firebase, database } from '@react-native-firebase/database'
 
-
-import { FlatList } from 'react-native-gesture-handler';
-
+import { FlatList } from 'react-native-gesture-handler'
 
 function ShowallAds() {
-    const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([])
 
-    const reference = firebase
+  const reference = firebase
     .app()
     .database('https://fir-addtest-e6b1c-default-rtdb.firebaseio.com/')
 
-    useEffect(() => {
-        reference.ref('posts')
-        .on('value', (snapshot) => {
-          setPosts([]);
-          snapshot.forEach((child) => {
-            const newObj = {
-              id: child.val().id,
-              name: child.val().name,
-              price: child.val().price,
-              description: child.val().description
-            };
-            setPosts(emptyArray => [...emptyArray, newObj]);
-          })
-        }) 
-      }, [])
+  useEffect(() => {
+    reference.ref('posts').on('value', snapshot => {
+      setPosts([])
+      snapshot.forEach(child => {
+        const newObj = {
+          id: child.val().id,
+          name: child.val().name,
+          price: child.val().price,
+          description: child.val().description,
+        }
+        setPosts(emptyArray => [...emptyArray, newObj])
+      })
+    })
+  }, [])
 
-    return (
-        <View style={styles.container}>
-          <Text style={styles.title}>Posts</Text>
-            <FlatList 
-              data={posts}
-              renderItem={(item) => {
-                return (
-                  <View style={styles.posts}>
-                  <Text style={styles.name}>
-                    {item.item.name} {item.item.price} {item.item.description} {item.item.id}
-                  </Text>
-                </View>
-              )
-              }
-              }            
-              keyExtractor={item => item.id}
-              scrollEnabled={true}
-            />
-        </View>
-      );
-    }
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Posts</Text>
+      <FlatList
+        data={posts}
+        renderItem={item => {
+          return (
+            <View style={styles.posts}>
+              <Text style={styles.name}>
+                {item.item.name} {item.item.price} {item.item.description}{' '}
+                {item.item.id}
+              </Text>
+            </View>
+          )
+        }}
+        keyExtractor={item => item.id}
+        scrollEnabled={true}
+      />
+    </View>
+  )
+}
 
-
-export default ShowallAds 
-
+export default ShowallAds
 
 const styles = StyleSheet.create({
   container: {
@@ -92,4 +87,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
   },
-});
+})

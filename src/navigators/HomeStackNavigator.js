@@ -5,7 +5,7 @@ import { HomeScreen } from '../screens'
 import ShowAllAds from '../screens/showallads/Showallads'
 import ShowMyAds from '../screens/showmyads/ShowMyAds'
 import Addnewad from '../screens/addnewad/Addnewad'
-
+import DeleteorUpdate from '../screens/deleteorupdate/DeleteorUpdate'
 
 const MainStack = createStackNavigator()
 const MainStackNavigator = () => {
@@ -21,6 +21,7 @@ const MainStackNavigator = () => {
       <MainStack.Screen name="ShowAllAds" component={ShowAllAds} />
       <MainStack.Screen name="ShowMyAds" component={ShowMyAds}/>
       <MainStack.Screen name="AddNewAd" component={Addnewad}/>
+      <MainStack.Screen name="DeleteorUpdate" component={DeleteorUpdate}/>
     </MainStack.Navigator>
   )
 }
