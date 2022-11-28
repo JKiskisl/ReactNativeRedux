@@ -36,8 +36,7 @@ function ShowallAds() {
           return (
             <View style={styles.posts}>
               <Text style={styles.name}>
-                {item.item.name} {item.item.price} {item.item.description}{' '}
-                {item.item.id}
+                {item.item.name} {item.item.description} {item.item.price}{' '}
               </Text>
             </View>
           )

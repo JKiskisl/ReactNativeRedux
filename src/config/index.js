@@ -19,17 +19,12 @@ export const ConfigProvider = ({ children }) => {
     webClientId:
       '1099201876026-7p9f7c1ukg55958ck45fc0bn0luilka4.apps.googleusercontent.com',
     onboardingConfig: {
-      welcomeTitle: localized('Instamobile'),
+      welcomeTitle: localized('RN redux'),
       welcomeCaption: localized(
-        'Use this codebase to start a new Firebase mobile app in minutes.',
+        'Redux application',
       ),
       walkthroughScreens: [
         {
-          icon: require('../assets/icons/firebase-icon.png'),
-          title: localized('Firebase'),
-          description: localized(
-            'Save weeks of hard work by using our codebase.',
-          ),
         },
         {
           icon: require('../assets/icons/login-icon.png'),
